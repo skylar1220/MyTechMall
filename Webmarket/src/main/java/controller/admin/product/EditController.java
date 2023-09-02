@@ -67,7 +67,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 			
 			InputStream fis = filePart.getInputStream();
 			
-			String realPath = request.getServletContext().getRealPath("/upload");
+			String realPath = request.getServletContext().getRealPath("/resources/images");
 			// System.out.println(realPath);
 			File path = new File(realPath);		// upload라고 하는 디렉토리가 실제 물리적으로 얻어졌을 때 그게 있느냐 
 			if( !path.exists())					// 없으면, directory를 만든다. 
