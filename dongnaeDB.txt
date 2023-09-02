@@ -1,3 +1,8 @@
+-- 추가
+ALTER TABLE product MODIFY COLUMN filename VARCHAR(255) ;
+
+
+
 -- MySQL dump 10.13  Distrib 8.0.33, for macos13 (arm64)
 --
 -- Host: 127.0.0.1    Database: marketdb
@@ -169,7 +174,7 @@ CREATE TABLE `product` (
   `manufacturer` varchar(20) DEFAULT NULL,
   `category` varchar(20) DEFAULT NULL,
   `unitsInStock` mediumtext,
-  `filename` varchar(20) DEFAULT NULL,
+  `filename` varchar(255) DEFAULT NULL,
   `pub` int DEFAULT '0',
   PRIMARY KEY (`productId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
