@@ -1,371 +1,323 @@
+-- MySQL dump 10.13  Distrib 8.0.33, for macos13 (arm64)
+--
+-- Host: 127.0.0.1    Database: marketdb
+-- ------------------------------------------------------
+-- Server version	8.0.33
 
--- 테이블 생성 SQL
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
---상품 테이블
-DROP TABLE  if exists goods;
-CREATE TABLE `Goods` (
-	`g_id`	int	NOT NULL primary key AUTO_INCREMENT,
-    `c1_id` int NOT NULL,
-	`c2_id`	int	NOT NULL,
-	`m_number`	int	NOT NULL,
-	`g_name`	varchar(255)	NULL,
-	`g_text`	varchar(255)	NULL,
-	`g_price`	int	NOT NULL,
-	`g_pic01`	varchar(255)	NULL,
-	`g_pic02`	varchar(255)	NULL,
-	`g_pic03`	varchar(255)	NULL,
-	`g_picpath`	varchar(255)	NULL,
-	`g_like`	int	NULL,
-	`g_regdate`	DATETIME	NULL	DEFAULT CURRENT_TIMESTAMP,
-	`g_status`	int default 1
-);
+--
+-- Table structure for table `cart`
+--
 
+DROP TABLE IF EXISTS `cart`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `cart` (
+  `cartId` int NOT NULL AUTO_INCREMENT,
+  `memberId` varchar(20) DEFAULT NULL,
+  `productId` varchar(20) NOT NULL,
+  `quantity` int DEFAULT '0',
+  PRIMARY KEY (`cartId`),
+  UNIQUE KEY `memberId` (`memberId`,`productId`),
+  KEY `cart_ibfk_2` (`productId`),
+  CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`memberId`) REFERENCES `member` (`memberId`),
+  CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`productId`) REFERENCES `product` (`productId`)
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-DROP TABLE  if exists keyword;
-CREATE TABLE `keyword` (
-	`key_id`	int not null primary key  auto_increment,
-	`m_number`	int	NOT NULL,
-	`keyword`	varchar(255)	NOT NULL,
-	`key_regdate`	datetime	NULL	DEFAULT CURRENT_TIMESTAMP
-);
+--
+-- Dumping data for table `cart`
+--
 
+LOCK TABLES `cart` WRITE;
+/*!40000 ALTER TABLE `cart` DISABLE KEYS */;
+INSERT INTO `cart` VALUES (36,'aaa','p6',1),(37,'aaa','p14',1),(38,'aaa','p17',1),(39,NULL,'p29',1),(40,NULL,'p29',1);
+/*!40000 ALTER TABLE `cart` ENABLE KEYS */;
+UNLOCK TABLES;
 
-DROP TABLE  if exists category_goods_1;
-CREATE TABLE `category_goods_1` (
-	`c1_id`	int	NOT NULL primary key  auto_increment,
-	`c1_category`	varchar(255)	NOT NULL
-);
-DROP TABLE  if exists category_goods_2;
-CREATE TABLE `category_goods_2` (
-	`c2_id`	int	NOT NULL PRIMARY KEY,
-	`c2_category`	varchar(255)	NOT NULL,
-	`c1_id`	int	NOT NULL
-);
+--
+-- Table structure for table `comment`
+--
 
-
-
--- community 테이블 -------------------------------------------------
-CREATE TABLE `community` (
-  `mu_id` int NOT NULL AUTO_INCREMENT,
-  `mu_name` varchar(255) NOT NULL,
-  `mu_detail` longtext NOT NULL,
-  `mu_c` int DEFAULT '0',
-  `mu_data` datetime DEFAULT CURRENT_TIMESTAMP,
-  `ca_id` int NOT NULL,
-  `m_number` int NOT NULL,
-  PRIMARY KEY (`mu_id`),
-  UNIQUE KEY `mu_id_UNIQUE` (`mu_id`)
-);
-
-CREATE TABLE `category` (
-  `ca_id` int NOT NULL AUTO_INCREMENT,
-  `ca_l` varchar(255) NOT NULL,
-  PRIMARY KEY (`ca_id`),
-  UNIQUE KEY `ca_id_UNIQUE` (`ca_id`)
-) ;
-
+DROP TABLE IF EXISTS `comment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `comment` (
-  `com_id` int NOT NULL AUTO_INCREMENT,
-  `com_c` varchar(255) NOT NULL,
-  `m_number` int NOT NULL,
-  `mu_id` int NOT NULL,
-  `com_data` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`com_id`),
-  UNIQUE KEY `com_id_UNIQUE` (`com_id`)
-) ;
+  `c_number` int NOT NULL AUTO_INCREMENT,
+  `productId` varchar(20) DEFAULT NULL,
+  `writerId` varchar(40) DEFAULT NULL,
+  `c_content` varchar(100) NOT NULL,
+  `c_regdate` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`c_number`)
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-CREATE TABLE `heart` (
-  `h_id` int NOT NULL AUTO_INCREMENT,
-  `mu_id` int NOT NULL,
-  `m_number` int NOT NULL,
-  `h_num` int NOT NULL,
-  PRIMARY KEY (`h_id`),
-  UNIQUE KEY `h_id_UNIQUE` (`h_id`)
-);
+--
+-- Dumping data for table `comment`
+--
 
+LOCK TABLES `comment` WRITE;
+/*!40000 ALTER TABLE `comment` DISABLE KEYS */;
+INSERT INTO `comment` VALUES (36,'p6','aaa','123 product!','2023-08-24 07:53:16'),(37,'p10','aaa','ㄷㄷ','2023-08-24 07:57:38'),(38,'p9','aaa','dfdf','2023-08-24 08:31:03'),(39,'p7','aaa','dfs','2023-08-24 08:32:47'),(40,'p3','aaa','sds','2023-08-24 08:38:35'),(41,'p5','aaa','111111','2023-08-24 08:43:30'),(43,'p11','aaa','p11','2023-08-24 08:56:15'),(44,'p8','aaa','good!','2023-08-24 09:06:09'),(45,'p14','aaa','배송이 빠르고 잘 작동됩니다!ㅎㅎ','2023-08-24 09:08:49');
+/*!40000 ALTER TABLE `comment` ENABLE KEYS */;
+UNLOCK TABLES;
 
-create view communityall
-as
-select DISTINCT
-	C.mu_id,Ca.ca_l, S.si_area, C.mu_name, C.mu_detail, M.m_id, C.mu_data , C.mu_c ,
-	(select
-count(*)
-from heart
-where heart.mu_id = C.mu_id ) as heart,
-(select
-count(*)
-from comment 
-where comment.mu_id =C.mu_id) as comment
-from community as C, si_area as S, member as M ,category as Ca
-where  C.m_number = M.m_number and M.si_id = S.si_id and Ca.ca_id = C.ca_id;
+--
+-- Table structure for table `member`
+--
 
+DROP TABLE IF EXISTS `member`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `member` (
+  `memberId` varchar(20) NOT NULL,
+  `password` varchar(20) NOT NULL,
+  `name` varchar(20) NOT NULL,
+  `email` varchar(30) NOT NULL,
+  `address` varchar(90) DEFAULT NULL,
+  PRIMARY KEY (`memberId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `member`
+--
 
+LOCK TABLES `member` WRITE;
+/*!40000 ALTER TABLE `member` DISABLE KEYS */;
+INSERT INTO `member` VALUES ('','','','@naver.com',''),('12222','dd','','@naver.com',''),('22','2','','@naver.com',''),('aa','aa','aa','aa@naver.com','aa'),('aaa','a','a','a@naver.com','a'),('ADMIN','admin1234','ADMIN','ADMIN@gmail.com','28, Jogaeteo-ro 5beon-gil'),('b','b','b','b@naver.com','b'),('bb','bb','bb','bb@naver.com','bb'),('bc','b','b','b@naver.com','b'),('cc','c','c','c@naver.com','c'),('d','ddd','ddd','ddd@daum.net','ddd'),('daaa','asdasfsad','aa','a','a'),('ddd','','','@naver.com',''),('dddd','d','','@naver.com',''),('dlguswl','','','@naver.com',''),('e','e','e','e@gmail.com','e'),('ee','e','e','e@naver.com','e'),('eee','e','e','e@naver.com','e'),('g','g','g','g@gmail.com','g'),('h','h','h','h@naver.com','h'),('i','i','i','i@naver.com','i'),('j','j','j','j@naver.com','j'),('jk','j','j','j@naver.com','j'),('k','k','k','k@naver.com','k'),('l','l','l','l@naver.com','l'),('m','m','m','m@naver.com','m'),('n','n','n','n@naver.com','n'),('nnn','nn','nn','n@naver.com','n'),('nnnn','nn','nn','n@naver.com','n'),('o','o','o','o@naver.com','o'),('p','p','p','p@naver.com','p'),('q','q','q','q@naver.com','q'),('r','r','r','r@naver.com','r'),('s','s','s','s@naver.com','s'),('ssol','1234','hansol','ssol@naver.com','고덕'),('test1','test1','1','1@1.com','test1'),('test2','test2','test2','test2@naver.com',NULL),('test3','test3','test3','test3@naver.com','test3'),('vv','v','v','v@naver.com','v'),('w','w','w','w@naver.com','w'),('www','www','www','www@gmail.com','28, Jogaeteo-ro 5beon-gil'),('x','x','x','x@naver.com','x');
+/*!40000 ALTER TABLE `member` ENABLE KEYS */;
+UNLOCK TABLES;
 
-insert into category(ca_l)
-values('사건사고');
-insert into category(ca_l)
-values('분실/실종');
-insert into category(ca_l)
-values('일상');
-insert into category(ca_l)
-values('맛집');
-insert into category(ca_l)
-values('취미');
-insert into category(ca_l)
-values('동네질문');
+--
+-- Temporary view structure for view `order_view`
+--
 
+DROP TABLE IF EXISTS `order_view`;
+/*!50001 DROP VIEW IF EXISTS `order_view`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `order_view` AS SELECT 
+ 1 AS `orderDetailId`,
+ 1 AS `productId`,
+ 1 AS `quantity`,
+ 1 AS `pname`,
+ 1 AS `unitPrice`,
+ 1 AS `shippingId`,
+ 1 AS `memberId`,
+ 1 AS `sum`,
+ 1 AS `name`,
+ 1 AS `phone`,
+ 1 AS `postcode`,
+ 1 AS `address`,
+ 1 AS `memo`,
+ 1 AS `orderDate`*/;
+SET character_set_client = @saved_cs_client;
 
+--
+-- Table structure for table `orderDetail`
+--
 
+DROP TABLE IF EXISTS `orderDetail`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `orderDetail` (
+  `orderDetailId` varchar(50) NOT NULL,
+  `shippingId` varchar(50) NOT NULL,
+  `productId` varchar(20) NOT NULL,
+  `quantity` int DEFAULT '0',
+  PRIMARY KEY (`orderDetailId`),
+  KEY `shippingId` (`shippingId`),
+  KEY `productId` (`productId`),
+  CONSTRAINT `orderdetail_ibfk_1` FOREIGN KEY (`shippingId`) REFERENCES `shipping` (`shippingId`),
+  CONSTRAINT `orderdetail_ibfk_2` FOREIGN KEY (`productId`) REFERENCES `product` (`productId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- 키워드 테이블
-DROP TABLE  if exists keyword;
-CREATE TABLE `keyword` (
-	`key_id`	int	NOT NULL primary key AUTO_INCREMENT,
-	`m_number`	int	NOT NULL,
-	`keyword`	varchar(255)	NOT NULL,
-	`key_regdate`	datetime	NULL	DEFAULT CURRENT_TIMESTAMP
-);
+--
+-- Dumping data for table `orderDetail`
+--
 
--- 회원 테이블
-drop table if exist member; 
-CREATE TABLE `Member` (
-	`m_number`	int	NOT NULL	unique primary key  auto_increment,
-	`m_id`	varchar(255)	NOT NULL	unique,
-	`m_pwd`	varchar(255)	NOT NULL,
-	`m_name`	varchar(255)	NOT NULL,
-	`m_email`	varchar(255)	NOT NULL	unique,
-	`m_phone`	varchar(255)	NOT NULL,
-	`m_point`	int	NULL DEFAULT 0 ,
-	`m_regdate`	timestamp	NULL	DEFAULT CURRENT_TIMESTAMP,
-	`si_id`	int	NOT NULL,
-	`do_id`	int	NULL,
-    `m_pic` varchar(255)	NULL,
-    `m_picpath` varchar(255)	NULL,
-    `m_auth`	varchar(50)	NOT NULL	DEFAULT 'ROLE_MEMBER'
-);
+LOCK TABLES `orderDetail` WRITE;
+/*!40000 ALTER TABLE `orderDetail` DISABLE KEYS */;
+INSERT INTO `orderDetail` VALUES ('20230719170657568839p27','20230719170657568839','p27',1),('2023072008223485875125','20230720082234858751','p7',2),('20230720082422737026','202307200824227370','p9',1),('20230818175950605829','202308181759506058','p29',1),('20230818183413835730','202308181834138357','p29',1),('20230818183823100731','202308181838231007','p29',1),('2023081912591400391','202308191259140039','p26',1),('2023081912591495071','202308191259149507','p26',1),('2023081913015918892','202308191301591889','p28',1),('2023082013594263053','202308201359426305','p30',1),('2023082014193459484','202308201419345948','p26',1),('2023082218081455465','202308221808145546','p27',2),('2023082218081455466','202308221808145546','p6',2),('2023082218081455467','202308221808145546','p13',1),('2023082218081455468','202308221808145546','p21',1),('20230822182800329310','202308221828003293','p26',1),('20230822183008976211','202308221830089762','p26',1),('20230822183050758012','202308221830507580','p29',1),('20230822183212874813','202308221832128748','p27',1),('20230822183236702114','202308221832367021','p27',1),('20230822183552621314','202308221835526213','p27',2),('20230822183814799515','202308221838147995','p27',1),('20230822184008258116','202308221840082581','p27',1),('20230822184108113317','202308221841081133','p27',1),('20230826133216689018','202308261332166890','p28',1),('20230826133216689021','202308261332166890','p6',3),('20230826133216689024','202308261332166890','p8',1),('20230826133216689025','202308261332166890','p14',1),('b20230719165959p10','b20230719165959','p10',1),('b23-07-19 15:49:3p27','b23-07-19 15:49:3','p27',2),('b23-07-19 15:49:3p35','b23-07-19 15:49:3','p35',1),('dp11','d1231','P11',1);
+/*!40000 ALTER TABLE `orderDetail` ENABLE KEYS */;
+UNLOCK TABLES;
 
+--
+-- Table structure for table `product`
+--
 
--- point 테이블
--- p_type 설정: plus(송금받은 경우) , minus(송금한 경우), put(충전한 경우)
-drop table  if exists point; 
-CREATE TABLE `point` (
-	`p_id`		int	NOT NULL unique primary key  auto_increment,
-	`m_number`	int	NOT NULL,
-    	`p_type`	varchar(255)	NULL	,
-	`p_price` int	NULL,
-	`p_regdate`	timestamp	NULL DEFAULT CURRENT_TIMESTAMP
-);
+DROP TABLE IF EXISTS `product`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `product` (
+  `productId` varchar(10) NOT NULL,
+  `pname` varchar(20) DEFAULT NULL,
+  `unitPrice` int DEFAULT NULL,
+  `descriptions` text,
+  `manufacturer` varchar(20) DEFAULT NULL,
+  `category` varchar(20) DEFAULT NULL,
+  `unitsInStock` mediumtext,
+  `filename` varchar(20) DEFAULT NULL,
+  `pub` int DEFAULT '0',
+  PRIMARY KEY (`productId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- 거래 테이블
-drop table  if exists deal; 
-CREATE TABLE `deal` (
-	`d_id`		int	NOT NULL unique primary key  auto_increment,
-	`m_number`	int	NOT NULL,
-   	`d_type`	varchar(255)	NULL	,
-	`d_m_number`int	NULL,
-	`d_regdate`	timestamp	NULL DEFAULT CURRENT_TIMESTAMP,
-	`g_id`		int	NOT NULL,
-	`d_score`	int	NULL,
-	`d_review`	varchar(255)	NULL,
-     unique ( m_number, d_type, d_m_number, g_id)
-);
+--
+-- Dumping data for table `product`
+--
 
--- 거래 + 상품 조회 view
-drop view  if exists deal_view; 
-create view deal_view
-as select  D.d_id, D.m_number, D.d_type, D.d_m_number, D.d_regdate, D.d_score, D.d_review, G.g_id, G.g_price, G.g_name
-from deal as D, goods as G
-where G.m_number = D.m_number ;
+LOCK TABLES `product` WRITE;
+/*!40000 ALTER TABLE `product` DISABLE KEYS */;
+INSERT INTO `product` VALUES ('p','갤럭시탭 S8 그라파이트',822000,'128GB','삼성전자','Tab','822000','P3.39.png',1),('p0221','test',155500,'test','로지텍',NULL,'155500','',1),('p1','에어팟 맥스 ',739000,'실버','Apple','Audio','739000','P4.48.png',1),('p10','갤럭시 Z 플립4 블루',1353000,'256GB','삼성전자','Phone','1353000','P2.37.png',1),('p11','갤럭시 Z 폴드3',1738180,'256GB','삼성전자','Phone','1738180','P2.39.png',1),('p12','2022 맥북 에어 M2',1590000,'256GB','Apple','Notebook','1590000','P2.42.png',1),('p13','2020 맥북 에어 13 M2',1390000,'256GB','Apple','Notebook','1390000','P2.51.png',1),('p14','삼성 노트북 Plus 2',549000,'15.6인치','삼성전자','Notebook','549000','P2.54.png',1),('p15','2023그램 베이직',2950000,'16인치','LG전자','Notebook','2950000','P3.02.png',1),('p16','2022 맥북 프로 13 M2',2060000,'512GB','Apple','Notebook','2060000','P3.05.png',1),('p17','HP 2023 노트북 15',639000,'512GB','HP','Notebook','639000','P3.09.png',1),('p18','애플펜슬 2세대',195000,'무선충전','Apple','Other','195000','P3.17.png',1),('p19','아이패드 에어 5세대 스페이스 그레이',929000,'64GB','Apple','Tab','929000','P3.21.png',1),('p2','소니 블루투스 헤드셋 WH-CH520',89000,'화이트','소니','Audio','89000','P5.22.png',1),('p21','아이패드 에어 5세대 퍼플',929000,'64GB','Apple','Tab','929000','P3.35.png',1),('p22','애플워치 SE 2세대 알루미늄 실버',359000,'GPS','Apple','Other','359000','P3.44.png',1),('p23','갤럭시워치5 그라파이트',329000,'블루투스','삼성전자','Other','329000','P3.47.png',1),('p24','애플워치 SE 2세대 알루미늄 스타',359000,'GPS','Apple','Other','359000','P3.49.png',1),('p25','갤럭시워치5 실버',299000,'블루투스','삼성전자','Other','299000','P3.51.png',1),('p26','로지텍 유선 키보드 K120',11150,'USB','로지텍','Other','11150','P5.02.png',1),('p27','로지텍 페블 M350 무선마우스',20860,'무소음','로지텍','other','20860','P5.07.png',1),('p28','로지텍 무선 마우스 M331',24900,'무소음 ','로지텍','Other','24900','P5.05.png',1),('p29','로지텍 블루투스 키보드',37230,'멀티 디바이스','로지텍','Other','37230','P5.09.png',1),('p3','아이폰 14 Pro 실버',1700000,'256GB','Apple','Phone','1700000','P4.53.png',1),('p30','라이트닝 이어팟',28000,'정품','Apple','Audio','28000','P4.09.png',1),('p31','에어팟 2세대 유선 충전',199000,'유선 충전 모델','Apple','Audio','199000','P4.12.png',1),('p32','갤럭시 버즈2 프로 그라파이트',279000,'커널형','삼성전자','Audio','279000','P4.14.png',1),('p33','갤럭시 버즈2 프로 화이트',279000,'커널형','삼성전자','Audio','279000','P4.16.png',1),('p34','갤럭시 버즈2 프로 퍼플',279000,'커널형','삼성전자','Audio','279000','P4.18.png',1),('p35','소니 블루투스 헤드셋 WH-CH520',89000,'블루투스','소니','Audio','89000','P4.20.png',1),('p4','에어팟 3세대',259000,'유선 충전','Apple','Audio','259000','P4.56.png',1),('p5','아이폰 14 Pro 스페이스블랙',1700000,'256GB','Apple','Phone','1700000','P5.06.png',1),('p6','갤럭시 A34',466330,'128GB ','삼성전자','Phone','466330','P1.10.png',1),('p7','갤럭시 S23',1599400,'256GB','삼성전자','Phone','1599400','P1.35.png',1),('p8','갤럭시 S23 Ultra ',1720400,'256GB','삼성전자','Phone','1720400','P2.24.png',1),('p9','갤럭시 Z 플립4 핑크',1353000,'256GB','삼성전자','Phone','1353000','P2.33.png',1);
+/*!40000 ALTER TABLE `product` ENABLE KEYS */;
+UNLOCK TABLES;
 
--- 찜목록 테이블
-drop TABLE if exists wishlist; 
-CREATE TABLE `wishlist` (
-	`wish_id`	int	NOT NULL primary key auto_increment,
-	`m_number`	int	NOT NULL	,
-	`g_id`	int	NOT NULL,
-    unique ( m_number, g_id)
-);
+--
+-- Temporary view structure for view `product_cart`
+--
 
--- 찜목록 조회 위한 wish_view
-drop view  if exists wish_view; 
-create view wish_view
-as select W.wish_id , W.m_number  , G.g_id , G.g_name  , G.g_price
-from wishlist as W, goods as G
-where W.m_number = G.m_number ;
+DROP TABLE IF EXISTS `product_cart`;
+/*!50001 DROP VIEW IF EXISTS `product_cart`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `product_cart` AS SELECT 
+ 1 AS `cartId`,
+ 1 AS `memberId`,
+ 1 AS `productId`,
+ 1 AS `pname`,
+ 1 AS `unitPrice`,
+ 1 AS `quantity`*/;
+SET character_set_client = @saved_cs_client;
 
--- 시 도  테이블
-drop TABLE if exists Do_area; 
-CREATE TABLE `Do_area` (
-	`do_id`	int	NOT NULL primary key ,
-	`do_area`	varchar(255)	NOT NULL
-);
+--
+-- Temporary view structure for view `product_view`
+--
 
-drop TABLE if exists Si_area; 
-CREATE TABLE `Si_area` (
-	`si_id`	int	NOT NULL  primary key ,
-	`si_area`	varchar(255)	NOT NULL,
-	`do_id`	int	NOT NULL
-);
+DROP TABLE IF EXISTS `product_view`;
+/*!50001 DROP VIEW IF EXISTS `product_view`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `product_view` AS SELECT 
+ 1 AS `productId`,
+ 1 AS `pname`,
+ 1 AS `unitPrice`,
+ 1 AS `descriptions`,
+ 1 AS `manufacturer`,
+ 1 AS `category`,
+ 1 AS `unitsInStock`,
+ 1 AS `filename`,
+ 1 AS `pub`,
+ 1 AS `cmtCount`*/;
+SET character_set_client = @saved_cs_client;
 
--- 시 도  테이블 기본 데이터 insert 
-insert into Do_area ( do_id, do_area ) values ('123', '서울' );
-insert into Do_area ( do_id, do_area ) values ('456', '경기' );
-insert into Do_area ( do_id, do_area ) values ('700', '인천' );
+--
+-- Table structure for table `shipping`
+--
 
-insert into Si_area ( si_id , si_area, do_id ) values ('10', '강남구', '123' );
-insert into Si_area ( si_id , si_area, do_id ) values ('11', '강동구', '123' );
-insert into Si_area ( si_id , si_area, do_id ) values ('12', '강북구', '123' );
-insert into Si_area ( si_id , si_area, do_id ) values ('13', '강서구', '123' );
-insert into Si_area ( si_id , si_area, do_id ) values ('14', '관악구', '123' );
-insert into Si_area ( si_id , si_area, do_id ) values ('15', '광진구', '123' );
-insert into Si_area ( si_id , si_area, do_id ) values ('16', '구로구', '123' );
-insert into Si_area ( si_id , si_area, do_id ) values ('17', '금천구', '123' );
-insert into Si_area ( si_id , si_area, do_id ) values ('18', '노원구', '123' );
-insert into Si_area ( si_id , si_area, do_id ) values ('19', '도봉구', '123' );
-insert into Si_area ( si_id , si_area, do_id ) values ('20', '동대문구', '123' );
-insert into Si_area ( si_id , si_area, do_id ) values ('21', '동작구', '123' );
-insert into Si_area ( si_id , si_area, do_id ) values ('22', '마포구', '123' );
-insert into Si_area ( si_id , si_area, do_id ) values ('23', '서대문구', '123' );
-insert into Si_area ( si_id , si_area, do_id ) values ('24', '서초구', '123' );
-insert into Si_area ( si_id , si_area, do_id ) values ('25', '성동구', '123' );
-insert into Si_area ( si_id , si_area, do_id ) values ('26', '성북구', '123' );
-insert into Si_area ( si_id , si_area, do_id ) values ('27', '송파구', '123' );
-insert into Si_area ( si_id , si_area, do_id ) values ('28', '양천구', '123' );
-insert into Si_area ( si_id , si_area, do_id ) values ('29', '영등포구', '123' );
-insert into Si_area ( si_id , si_area, do_id ) values ('30', '용산구', '123' );
-insert into Si_area ( si_id , si_area, do_id ) values ('31', '은평구', '123' );
-insert into Si_area ( si_id , si_area, do_id ) values ('32', '종로구', '123' );
-insert into Si_area ( si_id , si_area, do_id ) values ('33', '중구', '123' );
-insert into Si_area ( si_id , si_area, do_id ) values ('34', '중랑구', '123' );
+DROP TABLE IF EXISTS `shipping`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `shipping` (
+  `shippingId` varchar(50) NOT NULL,
+  `memberId` varchar(50) NOT NULL,
+  `sum` int DEFAULT '0',
+  `name` varchar(50) NOT NULL,
+  `phone` varchar(50) NOT NULL,
+  `postcode` varchar(50) NOT NULL,
+  `address` varchar(50) NOT NULL,
+  `memo` varchar(50) DEFAULT NULL,
+  `orderDate` timestamp NULL DEFAULT NULL,
+  `status` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`shippingId`),
+  KEY `memberId` (`memberId`),
+  CONSTRAINT `shipping_ibfk_1` FOREIGN KEY (`memberId`) REFERENCES `member` (`memberId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-insert into Si_area ( si_id , si_area, do_id ) values ('40', '수원', '456' );
-insert into Si_area ( si_id , si_area, do_id ) values ('41', '성남', '456' );
-insert into Si_area ( si_id , si_area, do_id ) values ('42', '용인', '456' );
-insert into Si_area ( si_id , si_area, do_id ) values ('43', '안양', '456' );
-insert into Si_area ( si_id , si_area, do_id ) values ('44', '안산', '456' );
-insert into Si_area ( si_id , si_area, do_id ) values ('45', '과천', '456' );
-insert into Si_area ( si_id , si_area, do_id ) values ('46', '광명', '456' );
-insert into Si_area ( si_id , si_area, do_id ) values ('47', '광주', '456' );
-insert into Si_area ( si_id , si_area, do_id ) values ('48', '군포', '456' );
-insert into Si_area ( si_id , si_area, do_id ) values ('49', '부천', '456' );
-insert into Si_area ( si_id , si_area, do_id ) values ('50', '시흥', '456' );
-insert into Si_area ( si_id , si_area, do_id ) values ('51', '김포', '456' );
-insert into Si_area ( si_id , si_area, do_id ) values ('52', '안성', '456' );
-insert into Si_area ( si_id , si_area, do_id ) values ('53', '오산', '456' );
-insert into Si_area ( si_id , si_area, do_id ) values ('54', '의왕', '456' );
-insert into Si_area ( si_id , si_area, do_id ) values ('55', '이천', '456' );
-insert into Si_area ( si_id , si_area, do_id ) values ('56', '평택', '456' );
-insert into Si_area ( si_id , si_area, do_id ) values ('57', '하남', '456' );
-insert into Si_area ( si_id , si_area, do_id ) values ('58', '화성', '456' );
-insert into Si_area ( si_id , si_area, do_id ) values ('59', '여주', '456' );
-insert into Si_area ( si_id , si_area, do_id ) values ('60', '양평', '456' );
-insert into Si_area ( si_id , si_area, do_id ) values ('61', '고양', '456' );
-insert into Si_area ( si_id , si_area, do_id ) values ('62', '구리', '456' );
-insert into Si_area ( si_id , si_area, do_id ) values ('63', '남양주', '456' );
-insert into Si_area ( si_id , si_area, do_id ) values ('64', '동두천', '456' );
-insert into Si_area ( si_id , si_area, do_id ) values ('65', '양주', '456' );
-insert into Si_area ( si_id , si_area, do_id ) values ('66', '의정부', '456' );
-insert into Si_area ( si_id , si_area, do_id ) values ('67', '파주', '456' );
-insert into Si_area ( si_id , si_area, do_id ) values ('68', '연천・포천', '456' );
-insert into Si_area ( si_id , si_area, do_id ) values ('69', '가평', '456' );
+--
+-- Dumping data for table `shipping`
+--
 
-insert into Si_area ( si_id , si_area, do_id ) values ('70', '인천', '700' );
-insert into Si_area ( si_id , si_area, do_id ) values ('71', '중구', '700' );
-insert into Si_area ( si_id , si_area, do_id ) values ('72', '동구', '700' );
-insert into Si_area ( si_id , si_area, do_id ) values ('73', '미추홀구', '700' );
-insert into Si_area ( si_id , si_area, do_id ) values ('74', '연수구', '700' );
-insert into Si_area ( si_id , si_area, do_id ) values ('75', '남동구', '700' );
-insert into Si_area ( si_id , si_area, do_id ) values ('76', '부평구', '700' );
-insert into Si_area ( si_id , si_area, do_id ) values ('77', '계양구', '700' );
-insert into Si_area ( si_id , si_area, do_id ) values ('78', '서구', '700' );
-insert into Si_area ( si_id , si_area, do_id ) values ('79', '강화・웅진군', '700' );
+LOCK TABLES `shipping` WRITE;
+/*!40000 ALTER TABLE `shipping` DISABLE KEYS */;
+INSERT INTO `shipping` VALUES ('20230719170657568839','b',20860,'3','4','5','5','5','2023-07-19 08:06:57','done'),('20230720082234858751','b',3198800,'33','3','3','3','3','2023-07-19 23:22:35','prepare'),('202307200824227370','b',1353000,'6','6','6','6','6','2023-07-19 23:24:22','done'),('202308181759506058','aaa',37230,'Hyeonji Lee','010123421234','17914','28, Jogaeteo-ro 5beon-gil','집 앞에 놓아주세요.','2023-08-18 08:59:51','done'),('202308181834138357','aaa',37230,'22Hyeonji Lee','22','17914','28, Jogaeteo-ro 5beon-gil','22','2023-08-18 09:34:14','prepare'),('202308181834139387','aaa',37230,'22Hyeonji Lee','22','17914','28, Jogaeteo-ro 5beon-gil','22','2023-08-18 09:34:14','done'),('202308181838231007','aaa',37230,'1234','1234','2314','2341','2134','2023-08-18 09:38:23','done'),('202308181838233881','aaa',37230,'1234','1234','2314','2341','2134','2023-08-18 09:38:23','done'),('202308191259140039','aaa',11150,'124','124','124','124','124','2023-08-19 03:59:14','shipping'),('202308191259145877','aaa',11150,'124','124','124','124','124','2023-08-19 03:59:14','prepare'),('202308191259149507','aaa',11150,'124','124','124','124','124','2023-08-19 03:59:14','prepare'),('202308191301591889','aaa',24900,'3r1','1241','124','123','123','2023-08-19 04:02:00','done'),('202308201359426305','aaa',28000,'q3e','12','12','12','12','2023-08-20 04:59:42','prepare'),('202308201419345948','aaa',11150,'1234','1234','2143','2314','2143','2023-08-20 05:19:34','shipping'),('202308221808142423','aaa',3293380,'Hyeonji Lee','123456','17914','28, Jogaeteo-ro 5beon-gil','ㅎㅎ','2023-08-22 09:08:15','prepare'),('202308221808142850','aaa',3293380,'Hyeonji Lee','123456','17914','28, Jogaeteo-ro 5beon-gil','ㅎㅎ','2023-08-22 09:08:15','prepare'),('202308221808145546','aaa',3293380,'Hyeonji Lee','123456','17914','28, Jogaeteo-ro 5beon-gil','ㅎㅎ','2023-08-22 09:08:15','prepare'),('202308221828003293','aaa',11150,'Hyeonji Lee','134','17914','28, Jogaeteo-ro 5beon-gil','124','2023-08-22 09:28:01','prepare'),('202308221830089762','aaa',11150,'Hyeonji Lee','12','17914','28, Jogaeteo-ro 5beon-gil','123','2023-08-22 09:30:08','prepare'),('202308221830507580','aaa',37230,'Hyeonji Lee','213','17914','28, Jogaeteo-ro 5beon-gil','123','2023-08-22 09:30:50','prepare'),('202308221832124181','aaa',20860,'Hyeonji Lee','ㅂㅈ','17914','28, Jogaeteo-ro 5beon-gil','ㅂㅈ','2023-08-22 09:32:12','prepare'),('202308221832128748','aaa',20860,'Hyeonji Lee','ㅂㅈ','17914','28, Jogaeteo-ro 5beon-gil','ㅂㅈ','2023-08-22 09:32:12','prepare'),('202308221832367021','aaa',20860,'Hyeonji Lee','12','17914','28, Jogaeteo-ro 5beon-gil','12','2023-08-22 09:32:36','prepare'),('202308221835526213','aaa',41720,'Hyeonji Lee','1234','17914','28, Jogaeteo-ro 5beon-gil','2134','2023-08-22 09:35:52','prepare'),('202308221835528491','aaa',41720,'Hyeonji Lee','1234','17914','28, Jogaeteo-ro 5beon-gil','2134','2023-08-22 09:35:52','prepare'),('202308221835529562','aaa',41720,'Hyeonji Lee','1234','17914','28, Jogaeteo-ro 5beon-gil','2134','2023-08-22 09:35:52','prepare'),('202308221838147995','aaa',20860,'Hyeonji Lee','sdf','17914','28, Jogaeteo-ro 5beon-gil','sdf','2023-08-22 09:38:15','prepare'),('202308221840082581','aaa',20860,'Hyeonji Lee','123','17914','28, Jogaeteo-ro 5beon-gil','1234','2023-08-22 09:40:08','prepare'),('202308221841081133','aaa',20860,'Hyeonji Lee','qwer','17914','28, Jogaeteo-ro 5beon-gil','1234','2023-08-22 09:41:08','prepare'),('202308261332166890','aaa',3693290,'Hyeonji Lee','12345','17914','28, Jogaeteo-ro 5beon-gil','상자에 고양이 그림 그려주세요!','2023-08-26 04:32:16','shipping'),('b20230719165959','b',1353000,'4','4','4','4','45','2023-07-19 08:00:00','done'),('b23-07-19 15:49:3','b',130720,'2','2','2','2','2','2023-07-19 06:49:32',NULL),('d1231','d',30000,'userD','010','12345','seoul','thanks','2023-12-31 14:59:53',NULL);
+/*!40000 ALTER TABLE `shipping` ENABLE KEYS */;
+UNLOCK TABLES;
 
+--
+-- Final view structure for view `order_view`
+--
 
+/*!50001 DROP VIEW IF EXISTS `order_view`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`marketdb_admin`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `order_view` AS select `O`.`orderDetailId` AS `orderDetailId`,`P`.`productId` AS `productId`,`C`.`quantity` AS `quantity`,`P`.`pname` AS `pname`,`P`.`unitPrice` AS `unitPrice`,`S`.`shippingId` AS `shippingId`,`S`.`memberId` AS `memberId`,`S`.`sum` AS `sum`,`S`.`name` AS `name`,`S`.`phone` AS `phone`,`S`.`postcode` AS `postcode`,`S`.`address` AS `address`,`S`.`memo` AS `memo`,`S`.`orderDate` AS `orderDate` from ((((`product` `P` join `cart` `C`) join `member` `M`) join `orderdetail` `O`) join `shipping` `S`) where ((`P`.`productId` = `C`.`productId`) and (`M`.`memberId` = `C`.`memberId`) and (`C`.`productId` = `O`.`productId`) and (`M`.`memberId` = `S`.`memberId`) and (`O`.`shippingId` = `S`.`shippingId`)) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 
+--
+-- Final view structure for view `product_cart`
+--
 
--- 카테고리 sample 목록
-insert into category_goods_1 (c1_category) values ('수입명품');
-insert into category_goods_1 (c1_category) values ('패션의류');
-insert into category_goods_1 (c1_category) values ('패션잡화');
-insert into category_goods_1 (c1_category) values ('뷰티');
-insert into category_goods_1 (c1_category) values ('모바일/태블릿');
-insert into category_goods_1 (c1_category) values ('가전제품');
-insert into category_goods_1 (c1_category) values ('노트북/PC');
-insert into category_goods_1 (c1_category) values ('카메라/캠코더');
-insert into category_goods_1 (c1_category) values ('가구/인테리어');
-insert into category_goods_1 (c1_category) values ('리빙/생활');
-insert into category_goods_1 (c1_category) values ('게임');
-insert into category_goods_1 (c1_category) values ('반려동물');
-insert into category_goods_1 (c1_category) values ('도서/음반');
-insert into category_goods_1 (c1_category) values ('스포츠');
-insert into category_goods_1 (c1_category) values ('공구/산업용품');
-insert into category_goods_1 (c1_category) values ('무료나눔');
+/*!50001 DROP VIEW IF EXISTS `product_cart`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`marketdb_admin`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `product_cart` AS select `C`.`cartId` AS `cartId`,`M`.`memberId` AS `memberId`,`P`.`productId` AS `productId`,`P`.`pname` AS `pname`,`P`.`unitPrice` AS `unitPrice`,`C`.`quantity` AS `quantity` from ((`product` `P` join `cart` `C`) join `member` `M`) where ((`P`.`productId` = `C`.`productId`) and (`M`.`memberId` = `C`.`memberId`)) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 
-insert into category_goods_2(c2_id, c1_id , c2_category) values (101 ,1, '여성신발');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (102, 1, '남성신발');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (103, 1, '가방/핸드백');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (104, 1, '지갑/벨트');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (105, 1, '여성의류');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (106, 1, '남성의류');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (107, 1, '패션잡화');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (108, 1, '시계/쥬얼리');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (109, 1, '유아');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (110, 1, '기타');
+--
+-- Final view structure for view `product_view`
+--
 
+/*!50001 DROP VIEW IF EXISTS `product_view`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`marketdb_admin`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `product_view` AS select `P`.`productId` AS `productId`,`P`.`pname` AS `pname`,`P`.`unitPrice` AS `unitPrice`,`P`.`descriptions` AS `descriptions`,`P`.`manufacturer` AS `manufacturer`,`P`.`category` AS `category`,`P`.`unitsInStock` AS `unitsInStock`,`P`.`filename` AS `filename`,`P`.`pub` AS `pub`,count(`C`.`productId`) AS `cmtCount` from (`product` `P` left join `comment` `C` on((`P`.`productId` = `C`.`productId`))) group by `P`.`productId`,`P`.`pname`,`P`.`unitPrice`,`P`.`descriptions`,`P`.`manufacturer`,`P`.`category`,`P`.`unitsInStock`,`P`.`filename`,`P`.`pub` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
-insert into category_goods_2(c2_id, c1_id , c2_category) values (201, 2, '여성의류');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (202, 2, '남성의류');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (203, 2, '교복/단체복');
-
-insert into category_goods_2(c2_id, c1_id , c2_category) values (301, 3, '운동화');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (302, 3, '여성신발');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (303, 3, '남성신발');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (304, 3, '가방/핸드백');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (305, 3, '지갑/벨트');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (306, 3, '악세서리/귀금속');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (307, 3, '시계');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (308, 3, '선글라스/안경');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (309, 3, '모자');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (310, 3, '기타/잡화');
-
-
-insert into category_goods_2(c2_id, c1_id , c2_category) values (501,5, '스마트폰_삼성');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (502, 5, '스마트폰_애플');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (503, 5, '스마트폰_엘지');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (504, 5, '스마트폰_기타');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (505, 5, '태블릿PC_삼성');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (506, 5, '태블릿PC_애플');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (507, 5, '태블릿PC_기타');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (508, 5, '스마트워치');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (509, 5, '일반/피처폰');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (510, 5, '케이스/거치대/보호필름');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (511, 5, '배터리/충전기/케이블');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (512, 5, '메모리/젠더/리더기');
-
-insert into category_goods_2(c2_id, c1_id , c2_category) values (601, 6, '냉장고');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (602, 6, 'TV');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (603, 6, '세탁기/건조기');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (604, 6, '주방가전');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (605, 6, '스마트홈');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (606, 6, '영상가전');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (607, 6, '음향가전');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (608, 6, '계절가전');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (609, 6, '생활가전');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (610, 6, '미용가전');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (611, 6, '기타가전');
-
-insert into category_goods_2(c2_id, c1_id , c2_category) values (701, 7, '노트북_삼성');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (702, 7, '노트북_엘지');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (703, 7, '맥북');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (704, 7, '데스크탑PC');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (705 ,7, '모니터');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (706, 7, '컴퓨터부품');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (707, 7, '키보드/마우스');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (708, 7, '스피커');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (709, 7, '프린터/복합기');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (710, 7, '공유기/랜카드');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (711, 7, '소프트웨어');
-insert into category_goods_2(c2_id, c1_id , c2_category) values (712, 7, '기타 주변기기');
-
+-- Dump completed on 2023-09-02 14:32:46
