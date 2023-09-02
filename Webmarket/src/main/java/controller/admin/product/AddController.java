@@ -41,9 +41,7 @@ public class AddController extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		
 		// 경로 알아내는 방법
-		
 		Collection <Part> parts = request.getParts();
 		StringBuilder builder = new StringBuilder();
 		
@@ -102,8 +100,6 @@ public class AddController extends HttpServlet {
 			product.setPub(pub);
 			product.setFilename(builder.toString());
 			
-			// System.out.println(builder.toString());
-		
 		ProductService productService = new ProductService();
 		productService.insertProduct(product);
 		
