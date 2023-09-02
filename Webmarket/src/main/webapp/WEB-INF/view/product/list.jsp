@@ -50,7 +50,7 @@
 					
 						<div class="card h-100">
 						<a href="/product/detail?id=${p.productId}" style="text-align: center;">
-							<img class="card-img-top" src="/img/${p.filename}" alt="..." 
+							<img class="card-img-top" src="/resources/images/${p.filename}" alt="..." 
 							 style="width: 80%;  margin: auto;" />
 						</a> 
 

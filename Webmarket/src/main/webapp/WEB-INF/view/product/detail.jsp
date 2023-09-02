@@ -78,7 +78,7 @@
 		<div class="row my-4">
 			<div class="col-md-5  my-4 text-center" >
 			<div class="container" >
-				<img src="/img/${p.filename}" alt="image" style="width: 80% ; " />
+				<img src="/resources/images/${p.filename}" alt="image" style="width: 80% ; " />
 			</div>
 			</div>
 			<div class="col-md-7">
