@@ -64,7 +64,6 @@ public class AddController extends HttpServlet {
 			if( !path.exists())					// 없으면, directory를 만든다. 
 				path.mkdirs();
 			
-			
 			String filePath = realPath +  File.separator + fileName ;
 			FileOutputStream fos = new FileOutputStream(filePath);
 			
